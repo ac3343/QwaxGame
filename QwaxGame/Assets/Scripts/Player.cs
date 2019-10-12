@@ -13,10 +13,14 @@ public class Player : MonoBehaviour
 
     //Fields
     public Vector3 position;
-    public float speed;
+    public float speed;                                     //Edit in inspector
     public KeyCode attackButton;
     PlayerStates currentState = PlayerStates.Standing;
+
+    ///Attack Fields
     Attack[] swings;
+    Rect[] attackCollisions;
+    public Rect[] attackBoxes;
     int currentSwing;
     int currentAttackFrame;
     
@@ -26,6 +30,7 @@ public class Player : MonoBehaviour
     {
         position = new Vector3(0, 0, 0);
         swings = new Attack[3];
+        attackCollisions = new Rect[3];
         currentSwing = 0;
         currentAttackFrame = 0;
     }
@@ -43,36 +48,61 @@ public class Player : MonoBehaviour
         switch (currentState)
         {
             case PlayerStates.Standing:
+                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+                {
+                    currentState = PlayerStates.Walking;
+                }
+
+                if (Input.GetKey(attackButton))
+                {
+                    currentState = PlayerStates.Attacking;
+                }
                 break;
             case PlayerStates.Walking:
+                if (Input.GetKey(KeyCode.A))
+                {
+                    position.x -= speed;
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    position.x += speed;
+                }
+
+                if (Input.GetKey(attackButton))
+                {
+                    currentState = PlayerStates.Attacking;
+                }
                 break;
             case PlayerStates.Attacking:
                 if (swings[currentSwing].AttackFinished(currentAttackFrame))
                 {
+                    attackCollisions[currentSwing] = Rect.zero;
                     currentAttackFrame = 0;
                     currentSwing = 0;
+                    
                 }
                 else if(swings[currentSwing].currentAttackState == Attack.AttackStates.CoolDown && Input.GetKeyDown(attackButton) && currentSwing < 2)
                 {
+                    attackCollisions[currentSwing] = Rect.zero;
                     currentSwing++;
                     currentAttackFrame = 0;
                 }
                 else if(swings[currentSwing].currentAttackState == Attack.AttackStates.Attack)
                 {
-
+                    attackCollisions[currentSwing] = attackBoxes[currentSwing];
+                }
+                else
+                {
+                    attackCollisions[currentSwing] = Rect.zero;
+                    currentAttackFrame = 0;
+                    currentSwing = 0;
                 }
                 break;
         }
-        if (Input.GetKey(KeyCode.A))
-        {
-            Debug.Log(speed);
-            position.x -= speed;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            position.x += speed;
-        }
+        
 
         transform.position = position;
     }
+
+    
 }
