@@ -9,6 +9,7 @@ public class EnemyManager : MonoBehaviour
     public int numEnemies;
     public int enemySpread;
     public List<GameObject> enemies;
+    public List<Rect> enemyCollisions;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,7 @@ public class EnemyManager : MonoBehaviour
         for(int i = 0; i < numEnemies; i++)
         {
             enemies.Add(Instantiate(enemy, new Vector3(position.x + Random.Range(-enemySpread,enemySpread), 0, 0), Quaternion.identity));
+            enemyCollisions.Add(new Rect(enemies[i].transform.position, new Vector2(2, 2)));
         }
     }
 }

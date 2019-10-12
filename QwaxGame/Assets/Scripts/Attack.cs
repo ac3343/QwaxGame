@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Attack : MonoBehaviour
+public class Attack 
 {
     public enum AttackStates
     {
@@ -25,6 +25,11 @@ public class Attack : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        
+    }
+
+    public Attack()
     {
         
     }
@@ -59,5 +64,6 @@ public class Attack : MonoBehaviour
         windUpFrames = windUp;
         attackFrames = attack;
         coolDownFrames = coolDown;
+        totalFrames = windUpFrames + attackFrames + coolDownFrames;
     }
 }
