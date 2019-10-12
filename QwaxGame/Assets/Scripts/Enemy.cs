@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
         Attacking,
     }
 
-    public Player player;
+    public GameObject player;
     public Vector3 position;
     public float speed;
     EnemyStates currentState;
@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
     {
         currentState = EnemyStates.Walking;
         position = new Vector3(5, 0, 0);
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -45,7 +46,7 @@ public class Enemy : MonoBehaviour
     {
         position = transform.position;
 
-        position += Vector3.Normalize(player.position - position) * speed;
+        position += Vector3.Normalize(player.transform.position - position) * speed;
 
         transform.position = position;
     }
