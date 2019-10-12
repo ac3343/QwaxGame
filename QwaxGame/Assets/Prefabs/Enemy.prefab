@@ -95,7 +95,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   position: {x: 0, y: 0, z: 0}
-  speed: 0.005
+  speed: 0.05
+  collision:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!95 &-4570088845605097348
 Animator:
   serializedVersion: 3

@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     public Vector3 position;
     public float speed;
     EnemyStates currentState;
+    public Rect collision;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,7 @@ public class Enemy : MonoBehaviour
         currentState = EnemyStates.Walking;
         position = new Vector3(5, 0, 0);
         player = GameObject.FindGameObjectWithTag("Player");
+        collision = new Rect(position, new Vector2(2,2));
     }
 
     // Update is called once per frame
@@ -47,6 +49,8 @@ public class Enemy : MonoBehaviour
         position = transform.position;
 
         position += Vector3.Normalize(player.transform.position - position) * speed;
+
+        collision.position = position;
 
         transform.position = position;
     }

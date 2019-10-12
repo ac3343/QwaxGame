@@ -31,7 +31,7 @@ public class EnemyManager : MonoBehaviour
         {
             enemies.Add(Instantiate(enemy, new Vector3(position.x + Random.Range(-enemySpread,enemySpread), 0, 0), Quaternion.identity));
             enemies[enemies.Count - 1].transform.parent = transform;
-            enemyCollisions.Add(new Rect(enemies[i].transform.position, new Vector2(2, 2)));
+            //enemyCollisions.Add(new Rect(enemies[i].transform.position, new Vector2(2, 2)));
         }
     }
 }
