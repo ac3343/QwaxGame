@@ -12,24 +12,25 @@ public class Player : MonoBehaviour
     }
 
     //Fields
+    public Vector3 position;
     public float speed;
     PlayerStates currentState = PlayerStates.Standing;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        position = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        InputUpdate();
     }
 
     void InputUpdate()
     {
-        Vector3 position = transform.position;
+        position = transform.position;
 
         switch (currentState)
         {
@@ -37,13 +38,14 @@ public class Player : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A))
         {
+            Debug.Log(speed);
             position.x -= speed;
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            position.x -= speed;
+            position.x += speed;
         }
 
-        position = transform.position;
+        transform.position = position;
     }
 }
