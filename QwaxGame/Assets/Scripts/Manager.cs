@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    public GameObject player;
-    EnemyManager enemyManager = new EnemyManager();
+    public GameObject playerPrefab;
+    GameObject player;
+    public GameObject enemyGroupPrefab;
+    List<GameObject> enemyGroups = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
-
+        player = Instantiate(playerPrefab, new Vector3(0, -3, 0), Quaternion.identity);
+        enemyGroups.Add(Instantiate(enemyGroupPrefab));
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        CheckCollisions();
     }
 
     void CreateCollisionBox(Rect boxRect)
@@ -26,7 +29,22 @@ public class Manager : MonoBehaviour
     
     void CheckCollisions()
     {
+        Player playerInfo = player.GetComponent<Player>();
+        if (playerInfo.CurrentAttackCollision != Rect.zero)
+        {
+            foreach(GameObject g in enemyGroups)
+            {
+                EnemyManager enemyGroup = g.GetComponent<EnemyManager>();
 
+                for(int i = 0; i < enemyGroup.enemyCollisions.Count; i++)
+                {
+                    if (areColliding(playerInfo.CurrentAttackCollision, enemyGroup.enemyCollisions[i]))
+                    {
+                        GameObject.Destroy(enemyGroup.enemies[i]);
+                    }
+                }
+            }
+        }
     }
 
     bool areColliding(Rect box1, Rect box2)
