@@ -105,6 +105,8 @@ public class Player : MonoBehaviour
         damagedFrames = 60;
         invincibleFrames = 120;
         isInvincible = false;
+
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
