@@ -94,8 +94,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
-  speed: 0.1
+  speed: 0.05
   attackButton: 106
+  distanceTraveled: 0
+  mainCamera: {fileID: 0}
   anim: {fileID: 0}
   attackBoxes:
   - {x: 1, y: 1}

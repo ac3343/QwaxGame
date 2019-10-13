@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     PlayerStates oldState = PlayerStates.Standing;
     PlayerDirection currentDirection = PlayerDirection.Right;
     PlayerDirection oldDirection = PlayerDirection.Right;
+    public float distanceTraveled;
+    public Camera mainCamera;
 
     public Animator anim;
 
@@ -68,6 +70,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         position = new Vector3(0, 0, 0);
+        distanceTraveled = 0f;
 
         anim = GetComponent<Animator>();
 
@@ -131,6 +134,7 @@ public class Player : MonoBehaviour
             tempScale.x *= -1;
             transform.localScale = tempScale;
         }
+
     }
 
     void InputUpdate()
@@ -157,14 +161,43 @@ public class Player : MonoBehaviour
                 }
                 break;
             case PlayerStates.Walking:
+                float camRot = mainCamera.transform.GetChild(0).localEulerAngles.z;
+                Vector3 camPos = mainCamera.transform.GetChild(0).transform.position;
+                Debug.Log(distanceTraveled);
                 if (Input.GetKey(KeyCode.A))
                 {
                     position.x -= speed;
+                    distanceTraveled -= speed;
+                    if (distanceTraveled > 5 && distanceTraveled < 10)
+                    {
+                        Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
+                        temp.z += 0.001f;
+                        mainCamera.transform.GetChild(0).localRotation = temp;
+                    }
+                    if (distanceTraveled > 10 && distanceTraveled < 15)
+                    {
+                        Debug.Log("going down");
+                        camPos.y += 0.001f;
+                        mainCamera.transform.GetChild(0).transform.position = camPos;
+                    }
                     currentDirection = PlayerDirection.Left;
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     position.x += speed;
+                    distanceTraveled += speed;
+                    if (distanceTraveled > 5 && distanceTraveled < 10)
+                    {
+                        
+                        Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
+                        temp.z -= 0.001f;
+                        mainCamera.transform.GetChild(0).localRotation = temp;
+                    }
+                    if(distanceTraveled > 10 && distanceTraveled < 15)
+                    {
+                        camPos.y -= 0.001f;
+                        mainCamera.transform.GetChild(0).transform.position = camPos;
+                    }
                     currentDirection = PlayerDirection.Right;
                 }
                 else
