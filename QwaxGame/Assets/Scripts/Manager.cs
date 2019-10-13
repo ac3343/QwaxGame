@@ -18,7 +18,7 @@ public class Manager : MonoBehaviour
     void Start()
     {
         //Sets the player variable to the created player instance
-        player = Instantiate(playerPrefab, new Vector3(0, -3, 0), Quaternion.identity);
+        player = Instantiate(playerPrefab, new Vector3(0, -1, 0), Quaternion.identity);
 
         //Adds created enemy group instance to the enemy groups list
         enemyGroups.Add(Instantiate(enemyGroupPrefab));
@@ -46,16 +46,19 @@ public class Manager : MonoBehaviour
                 EnemyManager enemyGroup = g.GetComponent<EnemyManager>();
 
                 //Runs through list of enemies in current enemy group
-                for(int i = enemyGroup.enemies.Count - 1; i > 0; i--)
+                for(int i = enemyGroup.enemies.Count - 1; i >= 0; i--)
                 {
                     //Gets a refrence to the current enemy's script
                     Enemy currentEnemy = enemyGroup.enemies[i].GetComponent<Enemy>();
 
-                    EnemyCollision(currentEnemy, enemyGroup, playerInfo, i);
+                    
+                    EnemyCollision(enemyGroup.enemies[i], g, playerInfo.CurrentAttackCollision, i);
+                    
                     /*
                     //Checks to see if the enemy and the attack box are colliding
                     if (areColliding(playerInfo.CurrentAttackCollision, currentEnemy.collision))
                     {
+
                         //Gets a refrence to the enemy to be destroyed
                         GameObject destroyedEnemy = enemyGroup.enemies[i];
 
@@ -70,6 +73,25 @@ public class Manager : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            //Runs through the list of enemygroups
+            foreach (GameObject g in enemyGroups)
+            {
+                //Gets a refrence to the current enemy group's script
+                EnemyManager enemyGroup = g.GetComponent<EnemyManager>();
+
+                //Runs through list of enemies in current enemy group
+                for (int i = enemyGroup.enemies.Count - 1; i >= 0; i--)
+                {
+                    //Gets a refrence to the current enemy's script
+                    Enemy currentEnemy = enemyGroup.enemies[i].GetComponent<Enemy>();
+
+
+                    currentEnemy.GettingHit = false;
+                }
+            }
+        }
     }
 
     bool areColliding(Rect box1, Rect box2)
@@ -80,11 +102,18 @@ public class Manager : MonoBehaviour
             box2.min.y < box1.max.y;
     }
 
-    void EnemyCollision(Enemy currentEnemy, EnemyManager currentEnemyGroup, Player playerInfo, int currentEnemyIndex)
+    void EnemyCollision(GameObject enemy, GameObject enemyGroup, Rect playerCollision, int currentEnemyIndex)
     {
+        //Gets a refrence to the current enemy group's script
+        EnemyManager currentEnemyGroup = enemyGroup.GetComponent<EnemyManager>();
+
+        Enemy currentEnemy = enemy.GetComponent<Enemy>();
+
+
         //Checks to see if the enemy and the attack box are colliding
-        if (areColliding(playerInfo.CurrentAttackCollision, currentEnemy.collision))
+        if (areColliding(playerCollision, currentEnemy.collision))
         {
+            Debug.Log("Collides");
             //If the enemy isn't dead and aren't getting hit
             if (!currentEnemy.GettingHit && !currentEnemy.IsDead)
             {
@@ -94,10 +123,12 @@ public class Manager : MonoBehaviour
                 //If the enemy survives the hit
                 if (!currentEnemy.IsDead)
                 {
+                    Debug.Log("Hits");
                     currentEnemy.GettingHit = true;
                 }
                 else
                 {
+                    Debug.Log("Kills");
                     //Gets a refrence to the enemy to be destroyed
                     GameObject destroyedEnemy = currentEnemyGroup.enemies[currentEnemyIndex];
 
@@ -113,7 +144,10 @@ public class Manager : MonoBehaviour
         else
         {
             currentEnemy.GettingHit = false;
+            Debug.Log("Isn't getting hit " + currentEnemyIndex);
         }
 
     }
+
+    
 }

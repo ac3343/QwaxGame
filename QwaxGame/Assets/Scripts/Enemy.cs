@@ -47,9 +47,10 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         currentState = EnemyStates.Walking;
-        position = new Vector3(5, 0, 0);
+        position = new Vector3(0, 0, 0);
         player = GameObject.FindGameObjectWithTag("Player");
-        collision = new Rect(position, new Vector2(2,2));
+        Vector2 collisionPosition = new Vector2(position.x - .5f, position.y - .5f);
+        collision = new Rect(collisionPosition, new Vector2(1,1));
         currentFrame = 0;
         gettingHit = false;
     }
@@ -57,6 +58,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        position = transform.position;
         switch(currentState)
         {
             case EnemyStates.Standing:
@@ -74,6 +76,11 @@ public class Enemy : MonoBehaviour
                 Debug.Log("Error! Enemy state unknown!");
                 break;
         }
+
+        Vector2 collisionPosition = new Vector2(position.x - .5f, position.y - .5f);
+        collision.position = collisionPosition;
+        transform.position = position;
+        DrawRectangle(collision);
     }
 
     void WalkEnemy()
@@ -94,11 +101,24 @@ public class Enemy : MonoBehaviour
 
     public void LoseHealth()
     {
+        Debug.Log("Lost health runs track");
         enemyHealth--;
 
         if(enemyHealth <= 0)
         {
             isDead = true;
         }
+    }
+
+    void DrawRectangle(Rect size)
+    {
+        //Draws top
+        Debug.DrawLine(new Vector3(size.xMin, size.yMax, 0), new Vector3(size.xMax, size.yMax, 0), Color.red);
+        //Draws bottom
+        Debug.DrawLine(new Vector3(size.xMin, size.yMin, 0), new Vector3(size.xMax, size.yMin, 0), Color.red);
+        //Draws right
+        Debug.DrawLine(new Vector3(size.xMax, size.yMin, 0), new Vector3(size.xMax, size.yMax, 0), Color.red);
+        //Draws left
+        Debug.DrawLine(new Vector3(size.xMin, size.yMin, 0), new Vector3(size.xMin, size.yMax, 0), Color.red);
     }
 }
