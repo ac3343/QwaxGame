@@ -45,7 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0, z: 0}
   enemy: {fileID: 3842987620556752793, guid: 3420f5f14d585194cbc49da2f73d491c, type: 3}
-  numEnemies: 4
-  enemySpread: 5
+  numEnemiesRandomRange: 5
   enemies: []
   enemyCollisions: []

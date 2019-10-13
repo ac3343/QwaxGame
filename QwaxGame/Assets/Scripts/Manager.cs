@@ -20,7 +20,7 @@ public class Manager : MonoBehaviour
     void Start()
     {
         //Sets the player variable to the created player instance
-        player = Instantiate(playerPrefab, new Vector3(-5, -1, 0), Quaternion.identity);
+        player = Instantiate(playerPrefab, new Vector3(-50, -16, 0), Quaternion.identity);
 
         //Adds created enemy group instance to the enemy groups list
         foreach(GameObject g in enemyLocations)

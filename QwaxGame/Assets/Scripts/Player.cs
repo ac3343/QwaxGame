@@ -170,16 +170,16 @@ public class Player : MonoBehaviour
                 {
                     position.x -= speed;
                     distanceTraveled -= speed;
-                    if (distanceTraveled > 5 && distanceTraveled < 10)
+                    if (distanceTraveled > 10 && distanceTraveled < 30)
                     {
                         Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
                         temp.z += 0.001f;
                         mainCamera.transform.GetChild(0).localRotation = temp;
                     }
-                    if (distanceTraveled > 10 && distanceTraveled < 20)
+                    if (distanceTraveled > 30 && distanceTraveled < 50)
                     {
                         Debug.Log("going down");
-                        camPos.y += 0.001f;
+                        camPos.y += 0.003f;
                         mainCamera.transform.GetChild(0).transform.position = camPos;
                     }
                     currentDirection = PlayerDirection.Left;
@@ -188,16 +188,16 @@ public class Player : MonoBehaviour
                 {
                     position.x += speed;
                     distanceTraveled += speed;
-                    if (distanceTraveled > 5 && distanceTraveled < 10)
+                    if (distanceTraveled > 10 && distanceTraveled < 30)
                     {
                         
                         Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
                         temp.z -= 0.001f;
                         mainCamera.transform.GetChild(0).localRotation = temp;
                     }
-                    if(distanceTraveled > 10 && distanceTraveled < 20)
+                    if(distanceTraveled > 30 && distanceTraveled < 50)
                     {
-                        camPos.y -= 0.001f;
+                        camPos.y -= 0.003f;
                         mainCamera.transform.GetChild(0).transform.position = camPos;
                     }
                     currentDirection = PlayerDirection.Right;
