@@ -60,15 +60,15 @@ public class Player : MonoBehaviour
         swings = new Attack[3];
         //First Swing
         swings[0] = new Attack();
-        swings[0].GiveFrames(30, 45, 30);
+        swings[0].GiveFrames(5, 20, 10);
 
         //Second Swing
         swings[1] = new Attack();
-        swings[1].GiveFrames(10, 20, 30);
+        swings[1].GiveFrames(5, 20, 10);
 
         //Third Swing
         swings[2] = new Attack();
-        swings[2].GiveFrames(10, 20, 30);
+        swings[2].GiveFrames(5 , 20, 10);
 
         //Sets up attack collisions array
         attackCollisions = new Rect[3];
@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
                         temp.z += 0.001f;
                         mainCamera.transform.GetChild(0).localRotation = temp;
                     }
-                    if (distanceTraveled > 10 && distanceTraveled < 15)
+                    if (distanceTraveled > 10 && distanceTraveled < 20)
                     {
                         Debug.Log("going down");
                         camPos.y += 0.001f;
@@ -166,7 +166,7 @@ public class Player : MonoBehaviour
                         temp.z -= 0.001f;
                         mainCamera.transform.GetChild(0).localRotation = temp;
                     }
-                    if(distanceTraveled > 10 && distanceTraveled < 15)
+                    if(distanceTraveled > 10 && distanceTraveled < 20)
                     {
                         camPos.y -= 0.001f;
                         mainCamera.transform.GetChild(0).transform.position = camPos;
