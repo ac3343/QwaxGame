@@ -85,9 +85,11 @@ public class Manager : MonoBehaviour
         //Checks to see if the enemy and the attack box are colliding
         if (areColliding(playerInfo.CurrentAttackCollision, currentEnemy.collision))
         {
+
             //If the enemy isn't dead and aren't getting hit
             if (!currentEnemy.GettingHit && !currentEnemy.IsDead)
             {
+                Debug.Log("I collided, enemy index " + currentEnemyIndex);
                 //Reduces enemy health
                 currentEnemy.LoseHealth();
 

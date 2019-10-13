@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         currentState = EnemyStates.Walking;
-        position = new Vector3(5, 0, 0);
+        position = transform.position;
         player = GameObject.FindGameObjectWithTag("Player");
         collision = new Rect(position, new Vector2(2,2));
         currentFrame = 0;
@@ -57,6 +57,8 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        position = transform.position;
+
         switch(currentState)
         {
             case EnemyStates.Standing:
@@ -74,6 +76,23 @@ public class Enemy : MonoBehaviour
                 Debug.Log("Error! Enemy state unknown!");
                 break;
         }
+
+        transform.position = position;
+        collision.position = position;
+
+        DrawRectangle(collision);
+    }
+
+    void DrawRectangle(Rect size)
+    {
+        //Draws top
+        Debug.DrawLine(new Vector3(size.xMin, size.yMax, 0), new Vector3(size.xMax, size.yMax, 0), Color.red);
+        //Draws bottom
+        Debug.DrawLine(new Vector3(size.xMin, size.yMin, 0), new Vector3(size.xMax, size.yMin, 0), Color.red);
+        //Draws right
+        Debug.DrawLine(new Vector3(size.xMax, size.yMin, 0), new Vector3(size.xMax, size.yMax, 0), Color.red);
+        //Draws left
+        Debug.DrawLine(new Vector3(size.xMin, size.yMin, 0), new Vector3(size.xMin, size.yMax, 0), Color.red);
     }
 
     void WalkEnemy()
