@@ -101,7 +101,7 @@ public class Enemy : MonoBehaviour
 
     public void LoseHealth()
     {
-        Debug.Log("Lost health runs track");
+        //Debug.Log("Lost health runs track");
         enemyHealth--;
 
         if(enemyHealth <= 0)
