@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9051648515307184605}
   - component: {fileID: 6882075206274758759}
   - component: {fileID: -5058803315729462858}
-  - component: {fileID: 4105276715834710322}
+  - component: {fileID: -3380307911427294911}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -100,22 +100,27 @@ MonoBehaviour:
   - {x: 1, y: 1}
   - {x: 1, y: 0.5}
   - {x: 1.5, y: 1.5}
---- !u!95 &4105276715834710322
-Animator:
-  serializedVersion: 3
+--- !u!111 &-3380307911427294911
+Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3689505727798198520}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 82546b69e53541a45a96bd6034feac36, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 34f4e74fe1482d34da31e61aaa863060, type: 2}
+  - {fileID: 7400000, guid: d27480c6ece5c63419630da47ed93ab9, type: 2}
+  - {fileID: 7400000, guid: 62d0c6a9415f98443b75c1afddc6dc4c, type: 2}
+  - {fileID: 7400000, guid: 365c1fd1e54d3fa48bd296a75f6b3531, type: 2}
+  - {fileID: 7400000, guid: 640bfdfa2545b574e9cf504f0e43dc45, type: 2}
+  - {fileID: 7400000, guid: 8ec135a8368cc0844bd19ab358eb833d, type: 2}
+  - {fileID: 7400000, guid: b50cff08b04591e4fbc3bf8b238c4127, type: 2}
+  - {fileID: 7400000, guid: 2cd9b12a93ebf964cbc4a72d1ac8e593, type: 2}
+  - {fileID: 7400000, guid: c2517a354655c2a429b716beabec101c, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
