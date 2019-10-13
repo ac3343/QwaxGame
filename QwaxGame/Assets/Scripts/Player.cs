@@ -12,12 +12,22 @@ public class Player : MonoBehaviour
         Damaged, 
         Death
     }
+    enum PlayerDirection
+    {
+        Right, 
+        Left,
+    }
 
     //Fields
     public Vector3 position;
     public float speed;                                     //Edit in inspector
     public KeyCode attackButton;
     PlayerStates currentState = PlayerStates.Standing;
+    PlayerStates oldState = PlayerStates.Standing;
+    PlayerDirection currentDirection = PlayerDirection.Right;
+    PlayerDirection oldDirection = PlayerDirection.Right;
+
+    public Animator anim;
 
     ///Attack Fields
     Attack[] swings;
@@ -40,6 +50,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         position = new Vector3(0, 0, 0);
+
+        anim = GetComponent<Animator>();
 
         //Creates swings
         swings = new Attack[3];
@@ -70,7 +82,28 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        oldState = currentState;
+        oldDirection = currentDirection;
         InputUpdate();
+
+        if(oldState != currentState)
+        {
+            if (currentState == PlayerStates.Standing)
+                anim.Play("PlayerIdle_1", 0, 0);
+            if (currentState == PlayerStates.Walking && Input.GetKey(KeyCode.D))
+                anim.Play("PlayerWalk_Right", 0, 0);
+            else if (currentState == PlayerStates.Walking && Input.GetKey(KeyCode.A))
+                anim.Play("PlayerWalk_Right", 0, 0);
+            if (currentState == PlayerStates.Attacking)
+                anim.Play("PlayerAttack_1", 0, 0);
+        }
+
+        if(oldDirection != currentDirection)
+        {
+            Vector3 tempScale = transform.localScale;
+            tempScale.x *= -1;
+            transform.localScale = tempScale;
+        }
     }
 
     void InputUpdate()
@@ -80,9 +113,15 @@ public class Player : MonoBehaviour
         switch (currentState)
         {
             case PlayerStates.Standing:
-                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+                if (Input.GetKey(KeyCode.A))
                 {
                     currentState = PlayerStates.Walking;
+                    currentDirection = PlayerDirection.Left;
+                }
+                else if(Input.GetKey(KeyCode.D))
+                {
+                    currentState = PlayerStates.Walking;
+                    currentDirection = PlayerDirection.Right;
                 }
 
                 if (Input.GetKey(attackButton))
@@ -94,10 +133,12 @@ public class Player : MonoBehaviour
                 if (Input.GetKey(KeyCode.A))
                 {
                     position.x -= speed;
+                    currentDirection = PlayerDirection.Left;
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     position.x += speed;
+                    currentDirection = PlayerDirection.Right;
                 }
                 else
                 {
@@ -176,6 +217,15 @@ public class Player : MonoBehaviour
             currentSwing = 0;
             currentState = PlayerStates.Standing;
 
+        }
+
+        if(currentSwing == 1)
+        {
+            anim.Play("PlayerAttack_2", 0, 0);
+        }
+        else if(currentSwing == 2)
+        {
+            anim.Play("PlayerAttack_3", 0, 0);
         }
     }
 

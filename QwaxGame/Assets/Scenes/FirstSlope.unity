@@ -206,12 +206,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 698823917}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &337463055 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9051648515307184605, guid: b30504112345f70439e1c11fc86344a1,
-    type: 3}
-  m_PrefabInstance: {fileID: 698823917}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,7 +391,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 2028138744}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3689505727798198520, guid: b30504112345f70439e1c11fc86344a1,
         type: 3}
@@ -407,12 +401,12 @@ PrefabInstance:
     - target: {fileID: 9051648515307184605, guid: b30504112345f70439e1c11fc86344a1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.44
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 9051648515307184605, guid: b30504112345f70439e1c11fc86344a1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.23333335
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 9051648515307184605, guid: b30504112345f70439e1c11fc86344a1,
         type: 3}
@@ -442,7 +436,7 @@ PrefabInstance:
     - target: {fileID: 9051648515307184605, guid: b30504112345f70439e1c11fc86344a1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9051648515307184605, guid: b30504112345f70439e1c11fc86344a1,
         type: 3}
@@ -462,17 +456,17 @@ PrefabInstance:
     - target: {fileID: 9051648515307184605, guid: b30504112345f70439e1c11fc86344a1,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.02
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9051648515307184605, guid: b30504112345f70439e1c11fc86344a1,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.033333335
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9051648515307184605, guid: b30504112345f70439e1c11fc86344a1,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.05
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b30504112345f70439e1c11fc86344a1, type: 3}
@@ -939,7 +933,6 @@ Transform:
   - {fileID: 175859236}
   - {fileID: 1467066184}
   - {fileID: 1650842683}
-  - {fileID: 337463055}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
