@@ -8,7 +8,9 @@ public class Player : MonoBehaviour
     {
         Standing,
         Walking, 
-        Attacking
+        Attacking,
+        Damaged, 
+        Death
     }
 
     //Fields
@@ -23,7 +25,11 @@ public class Player : MonoBehaviour
     public Vector2[] attackBoxes;
     int currentSwing;
     int currentAttackFrame;
-    
+
+    ///Death fields
+    Death deathState;
+    public int deathFrames;
+
     //Properties
     public Rect CurrentAttackCollision
     {
@@ -49,10 +55,16 @@ public class Player : MonoBehaviour
         swings[2] = new Attack();
         swings[2].GiveFrames(10, 20, 30);
 
-
+        //Sets up attack collisions array
         attackCollisions = new Rect[3];
+
+        //Sets attack data to it's default 
         currentSwing = 0;
         currentAttackFrame = 0;
+
+        //Creates death animation information
+        deathState = new Death();
+        deathState.GiveFrames(deathFrames);
     }
 
     // Update is called once per frame
@@ -78,9 +90,6 @@ public class Player : MonoBehaviour
                     currentState = PlayerStates.Attacking;
                 }
                 break;
-
-
-
             case PlayerStates.Walking:
                 if (Input.GetKey(KeyCode.A))
                 {
@@ -101,47 +110,15 @@ public class Player : MonoBehaviour
                 }
                 break;
 
-
-
             case PlayerStates.Attacking:
-                //
-                if (swings[currentSwing].AttackFinished(currentAttackFrame))
-                {
-                    attackCollisions[currentSwing] = Rect.zero;
-                    currentAttackFrame = 0;
-                    currentSwing = 0;
-                    currentState = PlayerStates.Standing;
-                }
-                //
-                else if(swings[currentSwing].currentAttackState == Attack.AttackStates.CoolDown && Input.GetKeyDown(attackButton) && currentSwing < 2)
-                {
-                    attackCollisions[currentSwing] = Rect.zero;
-                    currentSwing++;
-                    currentAttackFrame = 0;
-                }
-                //
-                else if(swings[currentSwing].currentAttackState == Attack.AttackStates.Attack)
-                {
-                    attackCollisions[currentSwing] = new Rect(new Vector2(transform.position.x, transform.position.y), attackBoxes[currentSwing]);
-                    currentAttackFrame++;
-
-                    DrawRectangle(attackCollisions[currentSwing]);
-                }
-                //
-                else if(swings[currentSwing].currentAttackState == Attack.AttackStates.WindUp || swings[currentSwing].currentAttackState == Attack.AttackStates.CoolDown)
-                {
-                    currentAttackFrame++;
-                    
-                }
-                //
-                else
-                {
-                    attackCollisions[currentSwing] = Rect.zero;
-                    currentAttackFrame = 0;
-                    currentSwing = 0;
-                    currentState = PlayerStates.Standing;
-
-                }
+                Attacking();
+                break;
+            case PlayerStates.Damaged:
+                break;
+            case PlayerStates.Death:
+                break;
+            default:
+                Debug.Log("Player State Unknown");
                 break;
 
         }
@@ -159,4 +136,48 @@ public class Player : MonoBehaviour
         //Draws left
         Debug.DrawLine(new Vector3(size.xMin, size.yMin, 0), new Vector3(size.xMin, size.yMax, 0), Color.red);
     }
+
+    void Attacking()
+    {
+        //
+        if (swings[currentSwing].AttackFinished(currentAttackFrame))
+        {
+            attackCollisions[currentSwing] = Rect.zero;
+            currentAttackFrame = 0;
+            currentSwing = 0;
+            currentState = PlayerStates.Standing;
+        }
+        //
+        else if (swings[currentSwing].currentAttackState == Attack.AttackStates.CoolDown && Input.GetKeyDown(attackButton) && currentSwing < 2)
+        {
+            attackCollisions[currentSwing] = Rect.zero;
+            currentSwing++;
+            currentAttackFrame = 0;
+        }
+        //
+        else if (swings[currentSwing].currentAttackState == Attack.AttackStates.Attack)
+        {
+            attackCollisions[currentSwing] = new Rect(new Vector2(transform.position.x, transform.position.y), attackBoxes[currentSwing]);
+            currentAttackFrame++;
+
+            DrawRectangle(attackCollisions[currentSwing]);
+        }
+        //
+        else if (swings[currentSwing].currentAttackState == Attack.AttackStates.WindUp || swings[currentSwing].currentAttackState == Attack.AttackStates.CoolDown)
+        {
+            currentAttackFrame++;
+
+        }
+        //
+        else
+        {
+            attackCollisions[currentSwing] = Rect.zero;
+            currentAttackFrame = 0;
+            currentSwing = 0;
+            currentState = PlayerStates.Standing;
+
+        }
+    }
+
+
 }

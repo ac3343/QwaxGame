@@ -7,8 +7,12 @@ public class Manager : MonoBehaviour
     //Fields
     public GameObject playerPrefab;
     GameObject player;
+
     public GameObject enemyGroupPrefab;
     List<GameObject> enemyGroups = new List<GameObject>();
+
+    public int playerHealth;                //In inspector
+    
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +51,8 @@ public class Manager : MonoBehaviour
                     //Gets a refrence to the current enemy's script
                     Enemy currentEnemy = enemyGroup.enemies[i].GetComponent<Enemy>();
 
+                    EnemyCollision(currentEnemy, enemyGroup, playerInfo, i);
+                    /*
                     //Checks to see if the enemy and the attack box are colliding
                     if (areColliding(playerInfo.CurrentAttackCollision, currentEnemy.collision))
                     {
@@ -60,6 +66,7 @@ public class Manager : MonoBehaviour
                         GameObject.Destroy(destroyedEnemy);
                         
                     }
+                    */
                 }
             }
         }
@@ -73,4 +80,40 @@ public class Manager : MonoBehaviour
             box2.min.y < box1.max.y;
     }
 
+    void EnemyCollision(Enemy currentEnemy, EnemyManager currentEnemyGroup, Player playerInfo, int currentEnemyIndex)
+    {
+        //Checks to see if the enemy and the attack box are colliding
+        if (areColliding(playerInfo.CurrentAttackCollision, currentEnemy.collision))
+        {
+            //If the enemy isn't dead and aren't getting hit
+            if (!currentEnemy.GettingHit && !currentEnemy.IsDead)
+            {
+                //Reduces enemy health
+                currentEnemy.LoseHealth();
+
+                //If the enemy survives the hit
+                if (!currentEnemy.IsDead)
+                {
+                    currentEnemy.GettingHit = true;
+                }
+                else
+                {
+                    //Gets a refrence to the enemy to be destroyed
+                    GameObject destroyedEnemy = currentEnemyGroup.enemies[currentEnemyIndex];
+
+                    //Removes enemy from the current list of enemies
+                    currentEnemyGroup.enemies.RemoveAt(currentEnemyIndex);
+
+                    //Destroys current enemy
+                    GameObject.Destroy(destroyedEnemy);
+                }
+            }
+
+        }
+        else
+        {
+            currentEnemy.GettingHit = false;
+        }
+
+    }
 }

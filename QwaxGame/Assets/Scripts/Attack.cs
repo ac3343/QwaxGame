@@ -11,9 +11,9 @@ public class Attack
         CoolDown
     }
     //Fields
-    public int windUpFrames;
-    public int attackFrames;
-    public int coolDownFrames;
+    int windUpFrames;
+    int attackFrames;
+    int coolDownFrames;
     public AttackStates currentAttackState;
     int totalFrames;
 

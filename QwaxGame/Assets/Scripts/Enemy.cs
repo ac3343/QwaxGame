@@ -10,13 +10,38 @@ public class Enemy : MonoBehaviour
         Standing,
         Walking,
         Attacking,
+        Hit,
+        Death
     }
 
     public GameObject player;
     public Vector3 position;
     public float speed;
+    public int enemyHealth;                 //In inspector
+
     EnemyStates currentState;
+    EnemyStates previousState;
+
     public Rect collision;
+    bool gettingHit;
+    bool isDead;
+
+    int currentFrame;
+
+    ///Death fields
+    Death deathState;
+    public int deathFrames;
+
+    //Properties
+    public bool GettingHit
+    {
+        get { return gettingHit; }
+        set { gettingHit = value; }
+    }
+    public bool IsDead
+    {
+        get { return isDead; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +50,8 @@ public class Enemy : MonoBehaviour
         position = new Vector3(5, 0, 0);
         player = GameObject.FindGameObjectWithTag("Player");
         collision = new Rect(position, new Vector2(2,2));
+        currentFrame = 0;
+        gettingHit = false;
     }
 
     // Update is called once per frame
@@ -35,11 +62,16 @@ public class Enemy : MonoBehaviour
             case EnemyStates.Standing:
                 break;
             case EnemyStates.Walking:
-                WalkEnemy();
+                //WalkEnemy();
                 break;
             case EnemyStates.Attacking:
                 break;
+            case EnemyStates.Death:
+                break;
+            case EnemyStates.Hit:
+                break;
             default:
+                Debug.Log("Error! Enemy state unknown!");
                 break;
         }
     }
@@ -58,5 +90,15 @@ public class Enemy : MonoBehaviour
     void AttackEnemy()
     {
 
+    }
+
+    public void LoseHealth()
+    {
+        enemyHealth--;
+
+        if(enemyHealth <= 0)
+        {
+            isDead = true;
+        }
     }
 }
