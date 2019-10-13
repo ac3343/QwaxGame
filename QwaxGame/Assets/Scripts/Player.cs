@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    enum PlayerStates
+    public enum PlayerStates
     {
         Standing,
         Walking, 
@@ -40,12 +40,30 @@ public class Player : MonoBehaviour
     Death deathState;
     public int deathFrames;
 
+    Vector2 collisionBoxSize;
+    int damagedFrames;
+    int currentDamagedFrame;
+    int invincibleFrames;
+    bool isInvincible;
+
     //Properties
     public Rect CurrentAttackCollision
     {
         get { return attackCollisions[currentSwing]; }
     }
 
+    public Rect CollisionBox
+    {
+        get { return new Rect(new Vector2(position.x - collisionBoxSize.x / 2, position.y - collisionBoxSize.y / 2), collisionBoxSize); }
+    }
+    public PlayerStates CurrentState
+    {
+        get { return currentState; }
+    }
+    public bool IsInvincible
+    {
+        get { return isInvincible; }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -77,6 +95,13 @@ public class Player : MonoBehaviour
         //Creates death animation information
         deathState = new Death();
         deathState.GiveFrames(deathFrames);
+
+        collisionBoxSize = new Vector2(1, 1);
+
+        currentDamagedFrame = 0;
+        damagedFrames = 60;
+        invincibleFrames = 120;
+        isInvincible = false;
     }
 
     // Update is called once per frame
@@ -96,6 +121,8 @@ public class Player : MonoBehaviour
                 anim.Play("PlayerWalk_Right", 0, 0);
             if (currentState == PlayerStates.Attacking)
                 anim.Play("PlayerAttack_1", 0, 0);
+            if (currentState == PlayerStates.Damaged)
+                anim.Play("PlayerIdle_1", 0, 0);
         }
 
         if(oldDirection != currentDirection)
@@ -155,6 +182,15 @@ public class Player : MonoBehaviour
                 Attacking();
                 break;
             case PlayerStates.Damaged:
+                if(currentDamagedFrame > damagedFrames)
+                {
+                    currentState = PlayerStates.Standing;
+                }
+                else
+                {
+                    currentDamagedFrame++;
+                }
+                
                 break;
             case PlayerStates.Death:
                 break;
@@ -163,6 +199,21 @@ public class Player : MonoBehaviour
                 break;
 
         }
+
+        if(currentDamagedFrame > invincibleFrames + damagedFrames)
+        {
+            isInvincible = false;
+            currentDamagedFrame = 0;
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+
+            sprite.color = Color.white;
+        }
+        else
+        {
+            currentDamagedFrame++;
+        }
+
+        DrawRectangle(CollisionBox);
         transform.position = position;
     }
 
@@ -232,5 +283,27 @@ public class Player : MonoBehaviour
         
     }
 
+    public void Dies()
+    {
+        currentState = PlayerStates.Death;
+        anim.SetTrigger("Killed");
+    }
 
+    public void GetsDamaged()
+    {
+        currentState = PlayerStates.Damaged;
+
+        isInvincible = true;
+
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+
+        sprite.color = Color.red;
+
+        Debug.Log("This code is running!");
+    }
+
+    public void OnDeathFinished()
+    {
+        gameObject.SetActive(false);
+    }
 }

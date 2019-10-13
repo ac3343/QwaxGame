@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
-    enum EnemyStates
+    public enum EnemyStates
     {
         Standing,
         Walking,
@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     public int enemyHealth;                 //In inspector
     public float attackRadius;
 
-    EnemyStates currentState;
+    public EnemyStates currentState;
     EnemyStates previousState;
 
     public Rect collision;
@@ -129,8 +129,6 @@ public class Enemy : MonoBehaviour
 
         DrawRectangle(collision);
         DrawRectangle(attackCollisionBox);
-
-        Debug.Log("Current state" + currentState);
     }
 
     void WalkEnemy()
