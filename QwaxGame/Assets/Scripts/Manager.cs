@@ -12,6 +12,8 @@ public class Manager : MonoBehaviour
     List<GameObject> enemyGroups = new List<GameObject>();
 
     public int playerHealth;                //In inspector
+
+    public List<GameObject> enemyLocations; //In inspector
     
 
     // Start is called before the first frame update
@@ -21,7 +23,10 @@ public class Manager : MonoBehaviour
         player = Instantiate(playerPrefab, new Vector3(-5, -1, 0), Quaternion.identity);
 
         //Adds created enemy group instance to the enemy groups list
-        enemyGroups.Add(Instantiate(enemyGroupPrefab));
+        foreach(GameObject g in enemyLocations)
+        {
+            enemyGroups.Add(Instantiate(enemyGroupPrefab, g.transform));
+        }
     }
 
     // Update is called once per frame

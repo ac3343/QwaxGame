@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         currentState = EnemyStates.Standing;
-        position = new Vector3(0, 0, 0);
+        position = transform.position;
         player = GameObject.FindGameObjectWithTag("Player");
 
         Vector2 collisionPosition = new Vector2(position.x - .5f, position.y - .5f);
