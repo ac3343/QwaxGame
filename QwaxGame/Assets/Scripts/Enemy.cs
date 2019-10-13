@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     public Vector3 position;
     public float speed;
     public int enemyHealth;                 //In inspector
+    public float attackRadius;
 
     EnemyStates currentState;
     EnemyStates previousState;
@@ -26,11 +27,18 @@ public class Enemy : MonoBehaviour
     bool gettingHit;
     bool isDead;
 
-    int currentFrame;
+    int currentAttackFrame;
+    Vector2 attackCollisionSize = new Vector2(2, 2);
+    public Rect attackCollisionBox;
 
     ///Death fields
     Death deathState;
     public int deathFrames;
+
+    //Animation
+    public Animator enemyAnimation;
+
+    Attack enemyAttack;
 
     //Properties
     public bool GettingHit
@@ -46,27 +54,54 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentState = EnemyStates.Walking;
+        currentState = EnemyStates.Standing;
         position = new Vector3(0, 0, 0);
         player = GameObject.FindGameObjectWithTag("Player");
+
         Vector2 collisionPosition = new Vector2(position.x - .5f, position.y - .5f);
         collision = new Rect(collisionPosition, new Vector2(1,1));
-        currentFrame = 0;
+
+        currentAttackFrame = 0;
         gettingHit = false;
+
+        enemyAttack = new Attack();
+        enemyAttack.GiveFrames(30, 30, 30);
+        attackRadius = 2.5f;
+
+        attackCollisionBox = Rect.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
+        previousState = currentState;
         position = transform.position;
         switch(currentState)
         {
             case EnemyStates.Standing:
-                break;
-            case EnemyStates.Walking:
-                //WalkEnemy();
+                if (IsPlayerClose())
+                    currentState = EnemyStates.Attacking;
                 break;
             case EnemyStates.Attacking:
+                if (!enemyAttack.AttackFinished(currentAttackFrame))
+                {
+                    if(enemyAttack.currentAttackState == Attack.AttackStates.Attack)
+                    {
+                        attackCollisionBox = new Rect(new Vector2(position.x - attackCollisionSize.x , position.y - attackCollisionSize.y / 2), attackCollisionSize);
+                    }
+                    else
+                    {
+                        attackCollisionBox = Rect.zero;
+                    }
+
+                    currentAttackFrame++;
+                }
+                else
+                {
+                    currentAttackFrame = 0;
+                    currentState = EnemyStates.Standing;
+                    attackCollisionBox = Rect.zero;
+                }
                 break;
             case EnemyStates.Death:
                 break;
@@ -74,13 +109,28 @@ public class Enemy : MonoBehaviour
                 break;
             default:
                 Debug.Log("Error! Enemy state unknown!");
+                attackCollisionBox = Rect.zero;
                 break;
         }
 
+        if (previousState != currentState)
+        {
+            if (currentState == EnemyStates.Standing)
+                enemyAnimation.Play("Idle", 0, 0);
+            if (currentState == EnemyStates.Attacking)
+                enemyAnimation.Play("Attacking", 0, 0);
+        }
+
         Vector2 collisionPosition = new Vector2(position.x - .5f, position.y - .5f);
+        //attackCollisionBox = new Rect(new Vector2(position.x, position.y - 1), attackCollisionSize);
+
         collision.position = collisionPosition;
         transform.position = position;
+
         DrawRectangle(collision);
+        DrawRectangle(attackCollisionBox);
+
+        Debug.Log("Current state" + currentState);
     }
 
     void WalkEnemy()
@@ -93,11 +143,7 @@ public class Enemy : MonoBehaviour
 
         transform.position = position;
     }
-
-    void AttackEnemy()
-    {
-
-    }
+    
 
     public void LoseHealth()
     {
@@ -108,6 +154,13 @@ public class Enemy : MonoBehaviour
         {
             isDead = true;
         }
+    }
+
+    bool IsPlayerClose()
+    {
+        float distanceFromPlayer = player.transform.position.x - position.x;
+        distanceFromPlayer = Mathf.Abs(distanceFromPlayer);
+        return distanceFromPlayer <= attackRadius;
     }
 
     void DrawRectangle(Rect size)
