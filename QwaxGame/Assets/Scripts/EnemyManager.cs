@@ -6,14 +6,18 @@ public class EnemyManager : MonoBehaviour
 {
     public Vector3 position;
     public GameObject enemy;
-    public int numEnemies;
-    public float enemySpread;
+    public int numEnemiesRandomRange;
     public List<GameObject> enemies;
     public List<Rect> enemyCollisions;
+
+    private int numEnemies;
+    private float enemySpread;
 
     // Start is called before the first frame update
     void Start()
     {
+        numEnemies = Random.Range(1, numEnemiesRandomRange);
+        enemySpread = numEnemies * 1.5f;
         position = transform.position;
         SetEnemies();
     }
