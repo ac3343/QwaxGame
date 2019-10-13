@@ -207,7 +207,7 @@ public class Player : MonoBehaviour
         else if (swings[currentSwing].currentAttackState == Attack.AttackStates.WindUp || swings[currentSwing].currentAttackState == Attack.AttackStates.CoolDown)
         {
             currentAttackFrame++;
-
+            
         }
         //
         else
@@ -218,7 +218,7 @@ public class Player : MonoBehaviour
             currentState = PlayerStates.Standing;
 
         }
-        if (currentAttackFrame == 0)
+        if(currentAttackFrame == 0)
         {
             if (currentSwing == 1)
             {
@@ -229,6 +229,7 @@ public class Player : MonoBehaviour
                 anim.Play("PlayerAttack_3", 0, 0);
             }
         }
+        
     }
 
 
