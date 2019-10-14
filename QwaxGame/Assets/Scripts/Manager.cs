@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Manager : MonoBehaviour
 
     public GameObject enemyGroupPrefab;
     List<GameObject> enemyGroups = new List<GameObject>();
+
+    public GameObject enemyBossPrefab;
 
     public int playerHealth;                //In inspector
 
@@ -36,13 +39,21 @@ public class Manager : MonoBehaviour
         {
             enemyGroups.Add(Instantiate(enemyGroupPrefab, g.transform));
         }
-    }
+
+        if(SceneManager.GetActiveScene().name.Equals("BossFight"))
+        {
+            enemyGroups.Add(Instantiate(enemyBossPrefab, new Vector3(-44, -15, 0), transform.rotation));
+        }
+;    }
 
     // Update is called once per frame
     void Update()
     {
         //Checks for collision
-        CheckCollisions();
+        if(enemyGroups.Count > 0)
+        {
+            CheckCollisions();
+        }
     }
     
     void CheckCollisions()
@@ -53,57 +64,71 @@ public class Manager : MonoBehaviour
         //Checks to see if the current attack collision is not zero
         if (playerInfo.CurrentAttackCollision != Rect.zero)
         {
-            //Runs through the list of enemygroups
-            foreach(GameObject g in enemyGroups)
+            if (!SceneManager.GetActiveScene().name.Equals("BossFight"))
             {
-                //Gets a refrence to the current enemy group's script
-                EnemyManager enemyGroup = g.GetComponent<EnemyManager>();
-
-                //Runs through list of enemies in current enemy group
-                for(int i = enemyGroup.enemies.Count - 1; i >= 0; i--)
+                Debug.Log("NOT BOSS");
+                //Runs through the list of enemygroups
+                foreach (GameObject g in enemyGroups)
                 {
-                    //Gets a refrence to the current enemy's script
-                    Enemy currentEnemy = enemyGroup.enemies[i].GetComponent<Enemy>();
+                    //Gets a refrence to the current enemy group's script
+                    EnemyManager enemyGroup = g.GetComponent<EnemyManager>();
 
-                    
-                    EnemyCollision(enemyGroup.enemies[i], g, playerInfo.CurrentAttackCollision, i);
-                    
-                    /*
-                    //Checks to see if the enemy and the attack box are colliding
-                    if (areColliding(playerInfo.CurrentAttackCollision, currentEnemy.collision))
+                    //Runs through list of enemies in current enemy group
+                    for (int i = enemyGroup.enemies.Count - 1; i >= 0; i--)
                     {
+                        //Gets a refrence to the current enemy's script
+                        Enemy currentEnemy = enemyGroup.enemies[i].GetComponent<Enemy>();
 
-                        //Gets a refrence to the enemy to be destroyed
-                        GameObject destroyedEnemy = enemyGroup.enemies[i];
+                        EnemyCollision(enemyGroup.enemies[i], g, playerInfo.CurrentAttackCollision, i);
 
-                        //Removes enemy from the current list of enemies
-                        enemyGroup.enemies.RemoveAt(i);
+                        /*
+                        //Checks to see if the enemy and the attack box are colliding
+                        if (areColliding(playerInfo.CurrentAttackCollision, currentEnemy.collision))
+                        {
 
-                        //Destroys current enemy
-                        GameObject.Destroy(destroyedEnemy);
-                        
+                            //Gets a refrence to the enemy to be destroyed
+                            GameObject destroyedEnemy = enemyGroup.enemies[i];
+
+                            //Removes enemy from the current list of enemies
+                            enemyGroup.enemies.RemoveAt(i);
+
+                            //Destroys current enemy
+                            GameObject.Destroy(destroyedEnemy);
+
+                        }
+                        */
                     }
-                    */
                 }
+            }
+            else
+            {
+                EnemyCollision(enemyGroups[0], enemyGroups[0], playerInfo.CurrentAttackCollision, 0);
             }
         }
         else
         {
-            //Runs through the list of enemygroups
-            foreach (GameObject g in enemyGroups)
+            if (!SceneManager.GetActiveScene().name.Equals("BossFight"))
             {
-                //Gets a refrence to the current enemy group's script
-                EnemyManager enemyGroup = g.GetComponent<EnemyManager>();
-
-                //Runs through list of enemies in current enemy group
-                for (int i = enemyGroup.enemies.Count - 1; i >= 0; i--)
+                //Runs through the list of enemygroups
+                foreach (GameObject g in enemyGroups)
                 {
-                    //Gets a refrence to the current enemy's script
-                    Enemy currentEnemy = enemyGroup.enemies[i].GetComponent<Enemy>();
+                    //Gets a refrence to the current enemy group's script
+                    EnemyManager enemyGroup = g.GetComponent<EnemyManager>();
+
+                    //Runs through list of enemies in current enemy group
+                    for (int i = enemyGroup.enemies.Count - 1; i >= 0; i--)
+                    {
+                        //Gets a refrence to the current enemy's script
+                        Enemy currentEnemy = enemyGroup.enemies[i].GetComponent<Enemy>();
 
 
-                    currentEnemy.GettingHit = false;
+                        currentEnemy.GettingHit = false;
+                    }
                 }
+            }
+            else
+            {
+                enemyGroups[0].GetComponent<Enemy>().GettingHit = false;
             }
         }
 
@@ -115,20 +140,43 @@ public class Manager : MonoBehaviour
                 //Gets a refrence to the current enemy group's script
                 EnemyManager enemyGroup = g.GetComponent<EnemyManager>();
 
-                //Runs through list of enemies in current enemy group
-                for (int i = enemyGroup.enemies.Count - 1; i >= 0; i--)
+                if (!SceneManager.GetActiveScene().name.Equals("BossFight"))
                 {
-                    //Gets a refrence to the current enemy's script
-                    Enemy currentEnemy = enemyGroup.enemies[i].GetComponent<Enemy>();
+                    //Runs through list of enemies in current enemy group
+                    for (int i = enemyGroup.enemies.Count - 1; i >= 0; i--)
+                    {
+                        //Gets a refrence to the current enemy's script
+                        Enemy currentEnemy = enemyGroup.enemies[i].GetComponent<Enemy>();
 
-                    //Checks to see if 
-                    if (currentEnemy.currentState == Enemy.EnemyStates.Attacking && 
-                        areColliding(currentEnemy.attackCollisionBox, playerInfo.CollisionBox) && 
-                        (playerInfo.CurrentState != Player.PlayerStates.Damaged || playerInfo.CurrentState != Player.PlayerStates.Attacking) && 
+                        //Checks to see if 
+                        if (currentEnemy.currentState == Enemy.EnemyStates.Attacking &&
+                            areColliding(currentEnemy.attackCollisionBox, playerInfo.CollisionBox) &&
+                            (playerInfo.CurrentState != Player.PlayerStates.Damaged || playerInfo.CurrentState != Player.PlayerStates.Attacking) &&
+                            playerHealth > 0 && !playerInfo.IsInvincible)
+                        {
+
+
+                            playerHealth--;
+
+                            if (playerHealth < 1)
+                            {
+                                playerInfo.Dies();
+                            }
+                            else
+                            {
+                                playerInfo.GetsDamaged();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Enemy boss = enemyGroups[0].GetComponent<Enemy>();
+                    if(boss.currentState == Enemy.EnemyStates.Attacking &&
+                        areColliding(boss.attackCollisionBox, playerInfo.CollisionBox)  &&
+                        (playerInfo.CurrentState != Player.PlayerStates.Damaged || playerInfo.CurrentState != Player.PlayerStates.Attacking) &&
                         playerHealth > 0 && !playerInfo.IsInvincible)
                     {
-
-                        
                         playerHealth--;
 
                         if(playerHealth < 1)
@@ -177,11 +225,21 @@ public class Manager : MonoBehaviour
                 }
                 else
                 {
-                    //Gets a refrence to the enemy to be destroyed
-                    GameObject destroyedEnemy = currentEnemyGroup.enemies[currentEnemyIndex];
+                    GameObject destroyedEnemy;
 
-                    //Removes enemy from the current list of enemies
-                    currentEnemyGroup.enemies.RemoveAt(currentEnemyIndex);
+                    if (!SceneManager.GetActiveScene().name.Equals("BossFight"))
+                    {
+                        //Gets a refrence to the enemy to be destroyed
+                        destroyedEnemy = currentEnemyGroup.enemies[currentEnemyIndex];
+
+                        //Removes enemy from the current list of enemies
+                        currentEnemyGroup.enemies.RemoveAt(currentEnemyIndex);
+                    }
+                    else
+                    {
+                        destroyedEnemy = enemyGroups[0];
+                        enemyGroups.RemoveAt(0);
+                    }
 
                     //Destroys current enemy
                     GameObject.Destroy(destroyedEnemy);

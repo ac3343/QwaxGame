@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -40,6 +41,9 @@ public class Enemy : MonoBehaviour
 
     Attack enemyAttack;
 
+    private bool bossCutsceneHappened = false;
+    private bool bossCutsceneIsHappening = false;
+
     //Properties
     public bool GettingHit
     {
@@ -58,8 +62,8 @@ public class Enemy : MonoBehaviour
         position = transform.position;
         player = GameObject.FindGameObjectWithTag("Player");
 
-        Vector2 collisionPosition = new Vector2(position.x - .5f, position.y - .5f);
-        collision = new Rect(collisionPosition, new Vector2(1,1));
+        Vector2 collisionPosition = new Vector2(position.x - (transform.localScale.x / 2), position.y - (transform.localScale.y / 2));
+        collision = new Rect(collisionPosition, new Vector2(transform.localScale.x, transform.localScale.y));
 
         currentAttackFrame = 0;
         gettingHit = false;
@@ -76,6 +80,9 @@ public class Enemy : MonoBehaviour
     {
         previousState = currentState;
         position = transform.position;
+
+        if (bossCutsceneIsHappening) PlayBossCutscene();
+
         switch(currentState)
         {
             case EnemyStates.Standing:
@@ -83,11 +90,22 @@ public class Enemy : MonoBehaviour
                     currentState = EnemyStates.Attacking;
                 break;
             case EnemyStates.Attacking:
+                if(SceneManager.GetActiveScene().name.Equals("BossFight"))
+                {
+                    if(!bossCutsceneHappened)
+                    {
+                        player.GetComponent<Player>().enabledControls = false;
+                        player.GetComponent<Player>().anim.Play("PlayerFall_1", 0, 0);
+                        bossCutsceneHappened = true;
+                        bossCutsceneIsHappening = true;
+                    }
+                }
+
                 if (!enemyAttack.AttackFinished(currentAttackFrame))
                 {
                     if(enemyAttack.currentAttackState == Attack.AttackStates.Attack)
                     {
-                        attackCollisionBox = new Rect(new Vector2(position.x - attackCollisionSize.x , position.y - attackCollisionSize.y / 2), attackCollisionSize);
+                        attackCollisionBox = new Rect(new Vector2(collision.xMin - attackCollisionSize.x / 2, collision.yMin - attackCollisionSize.y / 2), attackCollisionSize);
                     }
                     else
                     {
@@ -121,10 +139,6 @@ public class Enemy : MonoBehaviour
                 enemyAnimation.Play("Attacking", 0, 0);
         }
 
-        Vector2 collisionPosition = new Vector2(position.x - .5f, position.y - .5f);
-        //attackCollisionBox = new Rect(new Vector2(position.x, position.y - 1), attackCollisionSize);
-
-        collision.position = collisionPosition;
         transform.position = position;
 
         DrawRectangle(collision);
@@ -159,6 +173,23 @@ public class Enemy : MonoBehaviour
         float distanceFromPlayer = player.transform.position.x - position.x;
         distanceFromPlayer = Mathf.Abs(distanceFromPlayer);
         return distanceFromPlayer <= attackRadius;
+    }
+
+    void PlayBossCutscene()
+    {
+        Player playerInfo = player.GetComponent<Player>();
+        if(Mathf.Abs(playerInfo.position.x - position.x) < 10)
+        {
+            playerInfo.position.x -= 3 * Time.deltaTime;
+            playerInfo.transform.position = playerInfo.position;
+        }
+        else
+        {
+            playerInfo.anim.Play("PlayerPower_1", 0, 0);
+            playerInfo.isPoweredUp = true;
+            bossCutsceneIsHappening = false;
+            playerInfo.enabledControls = true;
+        }
     }
 
     void DrawRectangle(Rect size)
