@@ -19,6 +19,8 @@ public class Manager : MonoBehaviour
     public List<GameObject> enemyLocations; //In inspector
 
     public List<GameObject> audioSources;
+
+    public GameObject levelFinish;
     
 
     // Start is called before the first frame update
@@ -252,5 +254,24 @@ public class Manager : MonoBehaviour
 
     }
 
-    
+    public bool MusicFinished()
+    {
+        if (audioSources.Count > 0)
+            return !(audioSources[0].GetComponent<AudioSource>().isPlaying);
+        else
+            return false;
+    }
+
+    public bool PlayerPastGoalPost()
+    {
+        if(player.transform.position.x > levelFinish.transform.position.x)
+        {
+            //Line to prevent player movement
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
