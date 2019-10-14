@@ -78,15 +78,15 @@ public class Player : MonoBehaviour
         swings = new Attack[3];
         //First Swing
         swings[0] = new Attack();
-        swings[0].GiveFrames(5, 20, 10);
+        swings[0].GiveFrames(10, 30, 20);
 
         //Second Swing
         swings[1] = new Attack();
-        swings[1].GiveFrames(5, 20, 10);
+        swings[1].GiveFrames(10, 30, 20);
 
         //Third Swing
         swings[2] = new Attack();
-        swings[2].GiveFrames(5 , 20, 10);
+        swings[2].GiveFrames(10 , 30, 20);
 
         //Sets up attack collisions array
         attackCollisions = new Rect[3];
@@ -165,7 +165,7 @@ public class Player : MonoBehaviour
             case PlayerStates.Walking:
                 float camRot = mainCamera.transform.GetChild(0).localEulerAngles.z;
                 Vector3 camPos = mainCamera.transform.GetChild(0).transform.position;
-                Debug.Log(distanceTraveled);
+                //Debug.Log(distanceTraveled);
                 if (Input.GetKey(KeyCode.A))
                 {
                     position.x -= speed;
@@ -178,7 +178,7 @@ public class Player : MonoBehaviour
                     }
                     if (distanceTraveled > 30 && distanceTraveled < 50)
                     {
-                        Debug.Log("going down");
+                        //Debug.Log("going down");
                         camPos.y += 0.003f;
                         mainCamera.transform.GetChild(0).transform.position = camPos;
                     }
@@ -230,7 +230,7 @@ public class Player : MonoBehaviour
             case PlayerStates.Death:
                 break;
             default:
-                Debug.Log("Player State Unknown");
+                //Debug.Log("Player State Unknown");
                 break;
 
         }
@@ -284,7 +284,10 @@ public class Player : MonoBehaviour
         //
         else if (swings[currentSwing].currentAttackState == Attack.AttackStates.Attack)
         {
-            attackCollisions[currentSwing] = new Rect(new Vector2(transform.position.x, transform.position.y), attackBoxes[currentSwing]);
+            if(currentDirection == PlayerDirection.Right)
+                attackCollisions[currentSwing] = new Rect(new Vector2(transform.position.x, transform.position.y - attackBoxes[currentSwing].y / 2), attackBoxes[currentSwing]);
+            else if(currentDirection == PlayerDirection.Left)
+                attackCollisions[currentSwing] = new Rect(new Vector2(transform.position.x - attackBoxes[currentSwing].x, transform.position.y - attackBoxes[currentSwing].y / 2), attackBoxes[currentSwing]);
             currentAttackFrame++;
 
             DrawRectangle(attackCollisions[currentSwing]);
@@ -334,7 +337,7 @@ public class Player : MonoBehaviour
 
         sprite.color = Color.red;
 
-        Debug.Log("This code is running!");
+        //Debug.Log("This code is running!");
     }
 
     public void OnDeathFinished()
