@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class StillFrameManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class StillFrameManager : MonoBehaviour
     private int frameIndex = 0;
     private bool fadingIn = false;
     private bool fadingOut = false;
+    public bool stillsFinished = false;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +45,14 @@ public class StillFrameManager : MonoBehaviour
                 GetComponent<FadeSprite>().FadeIn();
                 fadingIn = true;
                 fadingOut = false;
+            }
+            else
+            {
+                VideoPlayer player = GameObject.FindGameObjectWithTag("Video").GetComponent<VideoPlayer>();
+                if (!player.isPlaying)
+                {
+                    player.Play();
+                }
             }
         }
     }

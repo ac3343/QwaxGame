@@ -111,6 +111,12 @@ public class Player : MonoBehaviour
         isInvincible = false;
 
         mainCamera = Camera.main;
+
+        if(SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            isPoweredUp = true;
+            anim.Play("PlayerPower_1", 0, 0);
+        }
     }
 
     // Update is called once per frame
@@ -176,7 +182,7 @@ public class Player : MonoBehaviour
                 }
                 break;
             case PlayerStates.Walking:
-                if(SceneManager.GetActiveScene().name.Equals("FirstSlope"))
+                if(SceneManager.GetActiveScene().name.Equals("FirstSlope") || SceneManager.GetActiveScene().name.Equals("SecondSlope"))
                 {
                     BackgroundRotation();
                 }
@@ -265,13 +271,31 @@ public class Player : MonoBehaviour
             if (distanceTraveled > 10 && distanceTraveled < 30)
             {
                 Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
-                temp.z += 0.001f;
-                mainCamera.transform.GetChild(0).localRotation = temp;
+                if (SceneManager.GetActiveScene().buildIndex == 4)
+                {
+                    camPos.y -= 0.003f;
+                    mainCamera.transform.GetChild(0).transform.position = camPos;
+                }
+                else
+                {
+                    temp.z += 0.001f;
+                    mainCamera.transform.GetChild(0).localRotation = temp;
+                }
             }
             if (distanceTraveled > 30 && distanceTraveled < 50)
             {
                 Debug.Log("going down");
-                camPos.y += 0.003f;
+                Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
+                if (SceneManager.GetActiveScene().buildIndex == 4)
+                {
+                    temp.z -= 0.001f;
+                }
+                else
+                {
+                    camPos.y += 0.003f;
+                    mainCamera.transform.GetChild(0).transform.position = camPos;
+                }
+                
                 mainCamera.transform.GetChild(0).transform.position = camPos;
             }
         }
@@ -282,13 +306,32 @@ public class Player : MonoBehaviour
             {
 
                 Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
-                temp.z -= 0.001f;
+                if (SceneManager.GetActiveScene().buildIndex == 4)
+                {
+                    camPos.y += 0.003f;
+                    mainCamera.transform.GetChild(0).transform.position = camPos;
+                }
+                else
+                {
+                    temp.z -= 0.001f;
+                    mainCamera.transform.GetChild(0).localRotation = temp;
+                }
                 mainCamera.transform.GetChild(0).localRotation = temp;
             }
             if (distanceTraveled > 30 && distanceTraveled < 50)
             {
-                camPos.y -= 0.003f;
-                mainCamera.transform.GetChild(0).transform.position = camPos;
+                Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
+                if (SceneManager.GetActiveScene().buildIndex == 4)
+                {
+                    temp.z += 0.001f;
+                    mainCamera.transform.GetChild(0).localRotation = temp;
+                }
+                else
+                {
+                    camPos.y -= 0.003f;
+                    mainCamera.transform.GetChild(0).transform.position = camPos;
+                }
+                
             }
         }
     }
