@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -163,43 +164,20 @@ public class Player : MonoBehaviour
                 }
                 break;
             case PlayerStates.Walking:
-                float camRot = mainCamera.transform.GetChild(0).localEulerAngles.z;
-                Vector3 camPos = mainCamera.transform.GetChild(0).transform.position;
-                Debug.Log(distanceTraveled);
+                if(SceneManager.GetActiveScene().name.Equals("FirstSlope"))
+                {
+                    BackgroundRotation();
+                }
                 if (Input.GetKey(KeyCode.A))
                 {
                     position.x -= speed;
-                    distanceTraveled -= speed;
-                    if (distanceTraveled > 10 && distanceTraveled < 30)
-                    {
-                        Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
-                        temp.z += 0.001f;
-                        mainCamera.transform.GetChild(0).localRotation = temp;
-                    }
-                    if (distanceTraveled > 30 && distanceTraveled < 50)
-                    {
-                        Debug.Log("going down");
-                        camPos.y += 0.003f;
-                        mainCamera.transform.GetChild(0).transform.position = camPos;
-                    }
+                    
                     currentDirection = PlayerDirection.Left;
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     position.x += speed;
-                    distanceTraveled += speed;
-                    if (distanceTraveled > 10 && distanceTraveled < 30)
-                    {
-                        
-                        Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
-                        temp.z -= 0.001f;
-                        mainCamera.transform.GetChild(0).localRotation = temp;
-                    }
-                    if(distanceTraveled > 30 && distanceTraveled < 50)
-                    {
-                        camPos.y -= 0.003f;
-                        mainCamera.transform.GetChild(0).transform.position = camPos;
-                    }
+                    
                     currentDirection = PlayerDirection.Right;
                 }
                 else
@@ -262,6 +240,45 @@ public class Player : MonoBehaviour
         Debug.DrawLine(new Vector3(size.xMax, size.yMin, 0), new Vector3(size.xMax, size.yMax, 0), Color.red);
         //Draws left
         Debug.DrawLine(new Vector3(size.xMin, size.yMin, 0), new Vector3(size.xMin, size.yMax, 0), Color.red);
+    }
+
+    void BackgroundRotation()
+    {
+        float camRot = mainCamera.transform.GetChild(0).localEulerAngles.z;
+        Vector3 camPos = mainCamera.transform.GetChild(0).transform.position;
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            distanceTraveled -= speed;
+            if (distanceTraveled > 10 && distanceTraveled < 30)
+            {
+                Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
+                temp.z += 0.001f;
+                mainCamera.transform.GetChild(0).localRotation = temp;
+            }
+            if (distanceTraveled > 30 && distanceTraveled < 50)
+            {
+                Debug.Log("going down");
+                camPos.y += 0.003f;
+                mainCamera.transform.GetChild(0).transform.position = camPos;
+            }
+        }
+        else if(Input.GetKey(KeyCode.D))
+        {
+            distanceTraveled += speed;
+            if (distanceTraveled > 10 && distanceTraveled < 30)
+            {
+
+                Quaternion temp = mainCamera.transform.GetChild(0).localRotation;
+                temp.z -= 0.001f;
+                mainCamera.transform.GetChild(0).localRotation = temp;
+            }
+            if (distanceTraveled > 30 && distanceTraveled < 50)
+            {
+                camPos.y -= 0.003f;
+                mainCamera.transform.GetChild(0).transform.position = camPos;
+            }
+        }
     }
 
     void Attacking()

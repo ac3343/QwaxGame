@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    public bool followPlayer = true;
     public GameObject player;
     private Vector3 offset;
 
@@ -17,6 +18,6 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = player.transform.position + offset;
+        if(followPlayer) transform.position = player.transform.position + offset;
     }
 }

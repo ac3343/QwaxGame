@@ -14,6 +14,8 @@ public class Manager : MonoBehaviour
     public int playerHealth;                //In inspector
 
     public List<GameObject> enemyLocations; //In inspector
+
+    public List<GameObject> audioSources;
     
 
     // Start is called before the first frame update
@@ -21,6 +23,11 @@ public class Manager : MonoBehaviour
     {
         //Sets the player variable to the created player instance
         player = Instantiate(playerPrefab, new Vector3(-50, -16, 0), Quaternion.identity);
+
+        if(audioSources.Count > 0)
+        {
+            audioSources[0].GetComponent<AudioSource>().Play();
+        }
 
         //Adds created enemy group instance to the enemy groups list
         foreach(GameObject g in enemyLocations)
