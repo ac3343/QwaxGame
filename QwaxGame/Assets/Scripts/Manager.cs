@@ -54,6 +54,11 @@ public class Manager : MonoBehaviour
         {
             CheckCollisions();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
     
     void CheckCollisions()

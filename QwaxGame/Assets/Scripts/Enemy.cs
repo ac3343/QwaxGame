@@ -73,6 +73,11 @@ public class Enemy : MonoBehaviour
         attackRadius = 2.5f;
 
         attackCollisionBox = Rect.zero;
+
+        if (SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            enemyHealth = 1;
+        }
     }
 
     // Update is called once per frame
