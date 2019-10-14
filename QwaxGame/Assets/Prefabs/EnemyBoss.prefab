@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8248893206783043500}
   - component: {fileID: 1638877495401654417}
   m_Layer: 0
-  m_Name: Enemy 1
+  m_Name: EnemyBoss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.2, y: 0.2}
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99bde89158fdd1b4b8e050d3bd6a74b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  player: {fileID: 2184317528505891601, guid: a8d348a89a344aa418128ddf6337fb42, type: 3}
   position: {x: 0, y: 0, z: 0}
   speed: 0.05
   enemyHealth: 3
@@ -123,7 +123,7 @@ Animator:
   m_GameObject: {fileID: 1324724829979663713}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0b64ba67f23a7fa45a73e2d8ec2f509b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4013810e2d189a241b1c1814376f65b5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

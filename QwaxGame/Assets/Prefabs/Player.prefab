@@ -101,7 +101,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   attackBoxes:
   - {x: 1, y: 1}
-  - {x: 1, y: 0.5}
+  - {x: 0.75, y: 1}
   - {x: 1.5, y: 1.5}
   deathFrames: 0
 --- !u!95 &4063130341976552614

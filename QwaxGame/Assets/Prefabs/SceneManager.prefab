@@ -47,4 +47,5 @@ MonoBehaviour:
     type: 3}
   enemyGroupPrefab: {fileID: 6778205829673616043, guid: 61cb5cc5609cd9a4791a525fe384c538,
     type: 3}
-  playerHealth: 5
+  playerHealth: 10
+  enemyLocations: []
