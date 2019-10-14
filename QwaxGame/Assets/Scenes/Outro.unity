@@ -236,7 +236,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e05b66bba7ebd1d4dbf9c55b7b76d3b5, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 7084818d3fade3844b80d0367f8032b9, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -435,7 +435,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627376666}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.17, y: 3.6607294, z: -83.59375}
+  m_LocalPosition: {x: -0.17, y: -0.42, z: -83.59375}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -671,5 +671,10 @@ PrefabInstance:
       propertyPath: levelFinish
       value: 
       objectReference: {fileID: 627376666}
+    - target: {fileID: 5173872608081274756, guid: d8550517a73e9954eb625fab0bf28614,
+        type: 3}
+      propertyPath: audioSources.Array.data[1]
+      value: 
+      objectReference: {fileID: 257433537}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d8550517a73e9954eb625fab0bf28614, type: 3}

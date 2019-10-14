@@ -49,7 +49,7 @@ public class StillFrameManager : MonoBehaviour
             else
             {
                 VideoPlayer player = GameObject.FindGameObjectWithTag("Video").GetComponent<VideoPlayer>();
-                if (!player.isPlaying)
+                if (player != null && !player.isPlaying)
                 {
                     player.Play();
                 }

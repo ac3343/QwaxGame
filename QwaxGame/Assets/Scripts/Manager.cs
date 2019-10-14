@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class Manager : MonoBehaviour
 {
@@ -55,12 +56,29 @@ public class Manager : MonoBehaviour
             CheckCollisions();
         }
 
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if(GameObject.FindGameObjectWithTag("Video") != null && VideoFinished())
+            {
+                Debug.Log("Bye Video");
+                GameObject.Destroy(GameObject.FindGameObjectWithTag("Video"));
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
     }
     
+    bool VideoFinished()
+    {
+        GameObject videoObj = GameObject.FindGameObjectWithTag("Video");
+        VideoPlayer video = videoObj.GetComponent<VideoPlayer>();
+        Debug.Log(video.frame + ", " + System.Convert.ToInt64(video.frameCount));
+        return (video.frame >= System.Convert.ToInt64(video.frameCount) - 1);
+    }
+
     void CheckCollisions()
     {
         //Gets refrence to player object's script
@@ -269,7 +287,7 @@ public class Manager : MonoBehaviour
 
     public bool PlayerPastGoalPost()
     {
-        if(player.transform.position.x > levelFinish.transform.position.x)
+        if(levelFinish != null && player.transform.position.x > levelFinish.transform.position.x)
         {
             //Line to prevent player movement
             return true;

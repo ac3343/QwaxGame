@@ -19,11 +19,11 @@ public class LevelChanger : MonoBehaviour
 
         Manager scene = sceneManager.GetComponent<Manager>();
         
-        if (scene.MusicFinished() && (SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 4 || SceneManager.GetActiveScene().buildIndex == 5))
+        if (scene.MusicFinished() && (SceneManager.GetActiveScene().buildIndex == 0 ||  SceneManager.GetActiveScene().buildIndex == 1 || SceneManager.GetActiveScene().buildIndex == 4 || SceneManager.GetActiveScene().buildIndex == 5))
         {
             FadeToLevel();
         }
-        else if(scene.PlayerPastGoalPost() && SceneManager.GetActiveScene().buildIndex == 2)
+        else if(scene.PlayerPastGoalPost() && (SceneManager.GetActiveScene().buildIndex == 2 || SceneManager.GetActiveScene().buildIndex == 3 || SceneManager.GetActiveScene().buildIndex == 4))
         {
             FadeToLevel();
         }
@@ -43,6 +43,10 @@ public class LevelChanger : MonoBehaviour
             case 2:
                 break;
             case 3:
+                if (scene.PlayerPastGoalPost())
+                {
+                    FadeToLevel();
+                }
                 break;
             case 4:
                 if (scene.PlayerPastGoalPost())

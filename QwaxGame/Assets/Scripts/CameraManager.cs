@@ -18,6 +18,11 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+            offset = transform.position - player.transform.position;
+        }
         if(followPlayer) transform.position = player.transform.position + offset;
     }
 }

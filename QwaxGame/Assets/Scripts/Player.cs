@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
         invincibleFrames = 120;
         isInvincible = false;
 
-        mainCamera = Camera.main;
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
         if(SceneManager.GetActiveScene().buildIndex == 4)
         {
