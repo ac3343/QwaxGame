@@ -49,6 +49,9 @@ public class Player : MonoBehaviour
     int invincibleFrames;
     bool isInvincible;
 
+    public bool enabledControls = true;
+    public bool isPoweredUp = false;
+
     //Properties
     public Rect CurrentAttackCollision
     {
@@ -115,20 +118,29 @@ public class Player : MonoBehaviour
     {
         oldState = currentState;
         oldDirection = currentDirection;
-        InputUpdate();
 
-        if(oldState != currentState)
+        if (isPoweredUp)
         {
-            if (currentState == PlayerStates.Standing)
-                anim.Play("PlayerIdle_1", 0, 0);
-            if (currentState == PlayerStates.Walking && Input.GetKey(KeyCode.D))
-                anim.Play("PlayerWalk_Right", 0, 0);
-            else if (currentState == PlayerStates.Walking && Input.GetKey(KeyCode.A))
-                anim.Play("PlayerWalk_Right", 0, 0);
-            if (currentState == PlayerStates.Attacking)
-                anim.Play("PlayerAttack_1", 0, 0);
-            if (currentState == PlayerStates.Damaged)
-                anim.Play("PlayerIdle_1", 0, 0);
+            isInvincible = true;
+        }
+
+        if (enabledControls)
+        {
+            InputUpdate();
+
+            if (oldState != currentState && !isPoweredUp)
+            {
+                if (currentState == PlayerStates.Standing)
+                    anim.Play("PlayerIdle_1", 0, 0);
+                if (currentState == PlayerStates.Walking && Input.GetKey(KeyCode.D))
+                    anim.Play("PlayerWalk_Right", 0, 0);
+                else if (currentState == PlayerStates.Walking && Input.GetKey(KeyCode.A))
+                    anim.Play("PlayerWalk_Right", 0, 0);
+                if (currentState == PlayerStates.Attacking)
+                    anim.Play("PlayerAttack_1", 0, 0);
+                if (currentState == PlayerStates.Damaged)
+                    anim.Play("PlayerIdle_1", 0, 0);
+            }
         }
 
         if(oldDirection != currentDirection)
@@ -324,7 +336,7 @@ public class Player : MonoBehaviour
             currentState = PlayerStates.Standing;
 
         }
-        if(currentAttackFrame == 0)
+        if(currentAttackFrame == 0 && !isPoweredUp)
         {
             if (currentSwing == 1)
             {
